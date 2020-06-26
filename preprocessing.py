@@ -1,4 +1,4 @@
-def preprocessed_data():
+def preprocessed_data(d_name):
     '''Return X and Y train test val'''
     # Make the predictable random
     import numpy as np
@@ -7,8 +7,10 @@ def preprocessed_data():
     np.random.seed(CUST_SEED)
 
     # Data set from nltk: (term, tag)
-    from nltk.corpus import treebank
-    sentences = treebank.tagged_sents(tagset='universal')
+    # from nltk.corpus import treebank
+    # sentences = treebank.tagged_sents(tagset='universal')
+    from UD_converter import convertUD
+    sentences = convertUD(d_name)
 
     # Extracting a set of tags: 12 tags
     tags = set([tag for sent in sentences for _, tag in sent])
