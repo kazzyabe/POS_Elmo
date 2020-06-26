@@ -1,6 +1,13 @@
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-d", "--directory", help="path to the Universal Dependencies data directory", default="data/UD_Japanese-GSD")
+parser.add_argument("-m", "--model", help="name for saving the model", default="./tmp/model.h5")
+args = parser.parse_args()
+
 # Getting data
-from preprocessing import preprocessed_data as pre
-X_train, X_test, X_val, y_train, y_test, y_val = pre()
+from preprocessing import preprocessed_data
+X_train, X_test, X_val, y_train, y_test, y_val = preprocessed_data(args.directory)
 
 # Get model
 from model import wrapped_model
@@ -8,6 +15,8 @@ clf = wrapped_model(X_train, y_train, X_val, y_val)
 
 # Training
 hist = clf.fit(X_train, y_train)
+
+clf.model.save(args.model)
 
 from plot import plot_model_performance
 plot_model_performance(
@@ -23,5 +32,5 @@ print(score)
 from tensorflow.keras.utils import plot_model
 plot_model(clf.model, to_file='model.png', show_shapes=True)
 
-clf.model.save('/tmp/model.h5')
+# clf.model.save('/tmp/model.h5')
 
