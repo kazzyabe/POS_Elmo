@@ -1,7 +1,7 @@
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-d", "--directory", help="path to the Universal Dependencies data directory", default="data/UD_Japanese-GSD")
+parser.add_argument("-d", "--directory", help="path to the Universal Dependencies data directory", default="/Users/kazuyabe/Data/UD_Japanese-GSD")
 parser.add_argument("-m", "--model", help="name for saving the model", default="./tmp/model.h5")
 args = parser.parse_args()
 
@@ -18,13 +18,13 @@ hist = clf.fit(X_train, y_train)
 
 clf.model.save(args.model)
 
-from plot import plot_model_performance
-plot_model_performance(
-    train_loss=hist.history.get('loss', []),
-    train_acc=hist.history.get('acc', []),
-    train_val_loss=hist.history.get('val_loss', []),
-    train_val_acc=hist.history.get('val_acc', [])
-)
+# from plot import plot_model_performance
+# plot_model_performance(
+#     train_loss=hist.history.get('loss', []),
+#     train_acc=hist.history.get('acc', []),
+#     train_val_loss=hist.history.get('val_loss', []),
+#     train_val_acc=hist.history.get('val_acc', [])
+# )
 
 score = clf.score(X_test, y_test)
 print(score)
