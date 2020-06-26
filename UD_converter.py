@@ -24,7 +24,7 @@ def convertUD(d_name = "UD_Japanese-GSD"):
         for w in s:
             temp.append((w['form'], w['upos']))
         p_sentences.append(temp)
-    return p_sentences
+    return p_sentences[:int(len(p_sentences)/3)]
 
 if __name__ == "__main__":
     import argparse
@@ -33,4 +33,4 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--directory", help="path to the Universal Dependencies data directory", default="UD_Japanese-GSD")
     args = parser.parse_args()
     sentences = convertUD(args.directory)
-    print(sentences[0])
+    print(len(sentences))
