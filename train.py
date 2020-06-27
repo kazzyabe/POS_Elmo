@@ -10,13 +10,15 @@ from preprocessing import preprocessed_data
 X_train, X_test, X_val, y_train, y_test, y_val = preprocessed_data(args.directory)
 
 # Get model
-from model import wrapped_model
-clf = wrapped_model(X_train, y_train, X_val, y_val)
+# from model import wrapped_model
+# clf = wrapped_model(X_train, y_train, X_val, y_val)
+from model import POS_Tagger
+tagger = POS_Tagger(X_train, y_train, X_val, y_val, epochs=2)
 
 # Training
-hist = clf.fit(X_train, y_train)
+hist = tagger.fit()
 
-clf.model.save(args.model)
+tagger.save(args.model)
 
 # from plot import plot_model_performance
 # plot_model_performance(
@@ -26,11 +28,11 @@ clf.model.save(args.model)
 #     train_val_acc=hist.history.get('val_acc', [])
 # )
 
-score = clf.score(X_test, y_test)
+score = tagger.evaluate(X_test, y_test)
 print(score)
 
-from tensorflow.keras.utils import plot_model
-plot_model(clf.model, to_file='model.png', show_shapes=True)
+# from tensorflow.keras.utils import plot_model
+# plot_model(clf.model, to_file='model.png', show_shapes=True)
 
 # clf.model.save('/tmp/model.h5')
 
