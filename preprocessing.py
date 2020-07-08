@@ -7,8 +7,6 @@ def preprocessed_data(d_name):
     np.random.seed(CUST_SEED)
 
     # Data set from nltk: (term, tag)
-    # from nltk.corpus import treebank
-    # sentences = treebank.tagged_sents(tagset='universal')
     from UD_converter import convertUD
     sentences = convertUD(d_name)
 
