@@ -24,7 +24,7 @@ def convertUD(d_name = "UD_Japanese-GSD"):
         for w in s:
             temp.append((w['form'], w['upos']))
         p_sentences.append(temp)
-    return p_sentences[:int(len(p_sentences)/3)]
+    return p_sentences
 
 if __name__ == "__main__":
     import argparse
