@@ -1,3 +1,10 @@
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-d", "--directory", help="path to the Universal Dependencies data directory", default="/Users/kazuyabe/Data/UD_English-EWT")
+parser.add_argument("-m", "--model", help="name for saving the model", default="./tmp/model.h5")
+args = parser.parse_args()
+
 from copy import deepcopy
 import pickle as p
 
@@ -11,8 +18,8 @@ np.random.seed(CUST_SEED)
 
 # Data set from nltk: (term, tag)
 from UD_converter import convertUD
-d_name = "/Users/kazuyabe/Data/UD_English-EWT"
-sentences = convertUD(d_name)
+# d_name = "/Users/kazuyabe/Data/UD_English-EWT"
+sentences = convertUD(args.directory)
 
 # Extracting a set of tags: 12 tags
 tags = set([tag for sent in sentences for _, tag in sent])

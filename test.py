@@ -1,3 +1,10 @@
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-d", "--directory", help="path to the Universal Dependencies data directory", default="/Users/kazuyabe/Data/UD_Japanese-GSD")
+parser.add_argument("-m", "--model", help="name for saving the model", default="./tmp/model.h5")
+args = parser.parse_args()
+
 from model import POS_Tagger
 
 batch_size = 32
@@ -17,8 +24,12 @@ y_val = p.load(open("data/y_val.p", "rb"))
 # y_tr = y_tr.reshape(y_tr.shape[0], y_tr.shape[1], 1)
 # y_val = y_val.reshape(y_val.shape[0], y_val.shape[1], 1)
 
+import numpy as np
+X_test = np.array(X_test)
+y_test = y_test.reshape(y_test.shape[0], y_test.shape[1], 1)
 
 tagger = POS_Tagger()
 hist = tagger.fit(data=True, X_train=X_tr, y_train=y_tr, validation_data=(X_val, y_val))
-p.dump(hist, open("history", "wb"))
-tagger.save()
+p.dump(hist.history, open("./tmp/history.p", "wb"))
+score = tagger.evaluate(X_test, y_test)
+print(score)

@@ -1,23 +1,19 @@
 import matplotlib.pyplot as plt
-def plot_model_performance(train_loss, train_acc, train_val_loss, train_val_acc):
-    """ Plot model loss and accuracy through epochs. """
-    blue= '#34495E'
-    green = '#2ECC71'
-    orange = '#E23B13'
-    # plot model loss
-    fig, (ax1, ax2) = plt.subplots(2, figsize=(10, 8))
-    ax1.plot(range(1, len(train_loss) + 1), train_loss, blue, linewidth=5, label='training')
-    ax1.plot(range(1, len(train_val_loss) + 1), train_val_loss, green, linewidth=5, label='validation')
-    ax1.set_xlabel('# epoch')
-    ax1.set_ylabel('loss')
-    ax1.tick_params('y')
-    ax1.legend(loc='upper right', shadow=False)
-    ax1.set_title('Model loss through #epochs', color=orange, fontweight='bold')
-    # plot model accuracy
-    ax2.plot(range(1, len(train_acc) + 1), train_acc, blue, linewidth=5, label='training')
-    ax2.plot(range(1, len(train_val_acc) + 1), train_val_acc, green, linewidth=5, label='validation')
-    ax2.set_xlabel('# epoch')
-    ax2.set_ylabel('accuracy')
-    ax2.tick_params('y')
-    ax2.legend(loc='lower right', shadow=False)
-    ax2.set_title('Model accuracy through #epochs', color=orange, fontweight='bold')
+
+history = {'loss': [0.26695565565312207, 0.07284288032919414, 0.055323470083704175, 0.04405510949725208, 0.03239121828382173], 'accuracy': [0.9302996, 0.97826445, 0.98311985, 0.9860796, 0.9893957], 'val_loss': [0.2235705812390034, 0.17708400464974916, 0.1887159634094972, 0.1702739206644205, 0.17804221321757024], 'val_accuracy': [0.9408654, 0.94600964, 0.9436058, 0.9485577, 0.94721156]}
+# summarize history for accuracy
+plt.plot(history['accuracy'])
+plt.plot(history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(history['loss'])
+plt.plot(history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()

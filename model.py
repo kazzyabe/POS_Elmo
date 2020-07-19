@@ -10,9 +10,11 @@ from tensorflow.keras import Model, Input
 from tensorflow.keras.layers import add
 from tensorflow.keras.layers import LSTM, Embedding, Dense, TimeDistributed, Dropout, Bidirectional, Lambda
 
+import os
+
 
 class POS_Tagger:
-    def __init__(self, X_train=None, y_train=None, X_val=None, y_val=None, hidden_neurons=512, epochs=5, batch_size=32, verbose=1, max_len=50, n_tags=17, load_f=False, loadFile="tmp/model.h5"):
+    def __init__(self, X_train=None, y_train=None, X_val=None, y_val=None, hidden_neurons=512, epochs=1, batch_size=32, verbose=1, max_len=50, n_tags=17, load_f=False, loadFile="tmp/model.h5"):
         '''
         load_f : flag to load a model (eg set to True load a model)
         '''
@@ -70,13 +72,18 @@ class POS_Tagger:
             # self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     def fit(self, data=False, X_train=None, y_train=None, validation_data=None):
+        checkpoint_path = "trained/cp.ckpt"
+        checkpoint_dir = os.path.dirname(checkpoint_path)
+        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_dir,
+                                                 save_weights_only=True,
+                                                 verbose=1)
         if not data:
             X_train = self.X_train
         if not data:
             y_train=self.y_train
         if not data:
             validation_data = self.val
-        return self.model.fit(x=X_train, y=y_train, batch_size=self.batch_size, epochs=self.epochs, verbose=self.verbose, validation_data=validation_data)
+        return self.model.fit(x=X_train, y=y_train, batch_size=self.batch_size, epochs=self.epochs, verbose=self.verbose, validation_data=validation_data, callbacks=[cp_callback])
     def evaluate(self, X_test, y_test):
         return self.model.evaluate(x=X_test, y=y_test, batch_size=self.batch_size, verbose=self.verbose)
     def save(self, f_name="tmp/model.h5"):
