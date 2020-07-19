@@ -74,7 +74,7 @@ class POS_Tagger:
     def fit(self, data=False, X_train=None, y_train=None, validation_data=None):
         checkpoint_path = "trained/cp.ckpt"
         checkpoint_dir = os.path.dirname(checkpoint_path)
-        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_dir,
+        cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
                                                  save_weights_only=True,
                                                  verbose=1)
         if not data:
