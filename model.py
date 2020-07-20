@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras import Model, Input
 from tensorflow.keras.layers import add
 from tensorflow.keras.layers import LSTM, Embedding, Dense, TimeDistributed, Dropout, Bidirectional, Lambda
+from tensorflow.keras.metrics import Precision, Recall
 
 import os
 

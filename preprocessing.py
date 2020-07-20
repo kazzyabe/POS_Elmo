@@ -123,9 +123,11 @@ y_test = pad_sequences(maxlen=maxlen_train, sequences=y_test, padding="post", va
 import numpy as np
 batch_size = 32
 X_train, X_val = np.array(X_train[:121*batch_size]), np.array(X_val[-13*batch_size:])
+X_test = np.array(X_test)
 y_train, y_val = y_train[:121*batch_size], y_val[-13*batch_size:]
 y_train = y_train.reshape(y_train.shape[0], y_train.shape[1], 1)
 y_val = y_val.reshape(y_val.shape[0], y_val.shape[1], 1)
+y_test = y_test.reshape(y_test.shape[0], y_test.shape[1], 1)
 
 p.dump(X_train, open("data/X_train.p", 'wb'))
 p.dump(X_test, open("data/X_test.p", 'wb'))
