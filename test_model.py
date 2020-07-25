@@ -1,14 +1,11 @@
 import argparse
-import tensorflow.compat.v1 as tf
-import tensorflow_hub as hub
-from tensorflow.compat.v1.keras import backend as K
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-d", "--directory", help="path to the Universal Dependencies data directory", default="/Users/kazuyabe/Data/UD_Japanese-GSD")
 parser.add_argument("-m", "--model", help="name for saving the model", default="./tmp/model.h5")
 args = parser.parse_args()
 
-from POS_Tagger import POS_Tagger
+from model import POS_Tagger
 
 batch_size = 32
 
@@ -31,17 +28,8 @@ import numpy as np
 # X_test = np.array(X_test)
 # y_test = y_test.reshape(y_test.shape[0], y_test.shape[1], 1)
 
-tf.disable_eager_execution()
-# sess = tf.Session()
-# K.set_session(sess)
-
-tagger = POS_Tagger()
-
-# sess.run(tf.global_variables_initializer())
-# sess.run(tf.tables_initializer())
-
-hist = tagger.fit(X_tr=X_tr, y_tr=y_tr, val=(X_val, y_val))
+tagger = POS_Tagger(epochs=5)
+hist = tagger.fit(data=True, X_train=X_tr, y_train=y_tr, validation_data=(X_val, y_val))
 p.dump(hist.history, open("./tmp/history.p", "wb"))
 score = tagger.evaluate(X_test, y_test)
 print(score)
-tagger.save()

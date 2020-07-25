@@ -13,6 +13,8 @@ from tensorflow.keras.metrics import Precision, Recall
 
 import os
 
+from ElmoLayer import ElmoLayer
+
 
 class POS_Tagger:
     def __init__(self, X_train=None, y_train=None, X_val=None, y_val=None, hidden_neurons=512, epochs=1, batch_size=32, verbose=1, max_len=50, n_tags=17, load_f=False, loadFile="tmp/model.h5"):
@@ -34,23 +36,29 @@ class POS_Tagger:
         sess = tf.Session()
         K.set_session(sess)
 
-        elmo_model = hub.Module("https://tfhub.dev/google/elmo/3", trainable=True)
-        sess.run(tf.global_variables_initializer())
-        sess.run(tf.tables_initializer())
+        # elmo_model = hub.Module("https://tfhub.dev/google/elmo/3", trainable=True)
+        # sess.run(tf.global_variables_initializer())
+        # sess.run(tf.tables_initializer())
 
-        def ElmoEmbedding(x):
-            return elmo_model(inputs={
-                                    "tokens": tf.squeeze(tf.cast(x, tf.string)),
-                                    "sequence_len": tf.constant(batch_size*[max_len])
-                            },
-                            signature="tokens",
-                            as_dict=True)["elmo"]
+        # def ElmoEmbedding(x):
+        #     return elmo_model(inputs={
+        #                             "tokens": tf.squeeze(tf.cast(x, tf.string)),
+        #                             "sequence_len": tf.constant(batch_size*[max_len])
+        #                     },
+        #                     signature="tokens",
+        #                     as_dict=True)["elmo"]
 
         if load_f:
             self.model = load_model(loadFile)
         else:
             input_text = Input(shape=(max_len,), dtype=tf.string)
-            embedding = Lambda(ElmoEmbedding, output_shape=(None, 1024))(input_text)
+            # embedding = Lambda(ElmoEmbedding, output_shape=(None, 1024))(input_text)
+            embedding = ElmoLayer()(input_text)
+
+            # Don't know why but it needs initialization after ElmoLayer
+            sess.run(tf.global_variables_initializer())
+            sess.run(tf.tables_initializer())
+
             x = Bidirectional(LSTM(units=hidden_neurons, return_sequences=True,
                                 recurrent_dropout=0.2, dropout=0.2))(embedding)
             x_rnn = Bidirectional(LSTM(units=hidden_neurons, return_sequences=True,

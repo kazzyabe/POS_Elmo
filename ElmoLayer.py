@@ -7,6 +7,7 @@ from tensorflow.keras.layers import Layer
 
 class ElmoLayer(Layer):
     def __init__(self, **kwargs):
+        self.dimensions = 1024
         self.batch_size = 32
         self.max_len = 50
         super(ElmoLayer, self).__init__(**kwargs)
@@ -21,6 +22,9 @@ class ElmoLayer(Layer):
                             },
                             signature="tokens",
                             as_dict=True)["elmo"]
+
+    def compute_output_shape(self, input_shape):
+        return (input_shape[0], self.dimensions)
 
     def compute_mask(self, inputs, mask=None):
         return K.not_equal(inputs, "__PAD__")
