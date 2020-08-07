@@ -21,8 +21,8 @@ res_test = tagger.model.predict(X_test)
 p.dump(res_tr, open("Res/X_train.p", "wb"))
 p.dump(res_test, open("Res/X_test.p", "wb"))
 
-# import numpy as np
-# m_res = np.argmax(res, axis=2)
+
+
 
 # IndexTotag = {}
 # for k in tagToIndex.keys():

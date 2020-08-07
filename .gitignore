@@ -4,3 +4,4 @@ data/*
 *.zip
 trained/*
 /Res
+/5trainedMasked
