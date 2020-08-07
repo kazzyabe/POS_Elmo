@@ -35,7 +35,7 @@ tf.disable_eager_execution()
 # sess = tf.Session()
 # K.set_session(sess)
 
-tagger = POS_Tagger()
+tagger = POS_Tagger(epochs=5)
 
 # sess.run(tf.global_variables_initializer())
 # sess.run(tf.tables_initializer())
